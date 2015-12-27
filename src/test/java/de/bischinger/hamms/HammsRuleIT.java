@@ -1,20 +1,5 @@
-# hammsrule
+package de.bischinger.hamms;
 
-Reusable JUnit Rule for integration test with [Hamms](https://github.com/kevinburke/hamms)
-
-###Installation
-
-```xml
-    <dependency>
-        <groupId>de.bischinger</groupId>
-        <artifactId>hammsrule</artifactId>
-        <version>1.0.0</version>
-        <scope>test</scope>
-    </dependency>
-```
-###Sample use
-
-```java
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.Rule;
 import org.junit.Test;
@@ -24,6 +9,9 @@ import java.net.SocketTimeoutException;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+/**
+ * Created by bischofa on 08/12/15.
+ */
 public class HammsRuleIT {
 
     @Rule
@@ -38,5 +26,10 @@ public class HammsRuleIT {
         myService = new MyOpenWeatherMapService(hammsRule.getTcpResetUrl());
         assertThatThrownBy(callService).hasCauseInstanceOf(ConnectException.class);
     }
+
+    @Test
+    public void testAcceptButNeverSendBack() {
+        myService = new MyOpenWeatherMapService(hammsRule.getAcceptButNeverSendBack());
+        assertThatThrownBy(callService).hasCauseInstanceOf(SocketTimeoutException.class);
+    }
 }
-```
